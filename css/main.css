@@ -1,0 +1,100 @@
+body {
+    font: 1em georgia;
+}
+h1 {
+    font: bold 2em helvetica;
+}
+.layout {
+    max-width: 30em;
+    margin: auto;
+}
+.header {
+    padding: 1em;
+}
+.newitem {
+    padding: 1em;
+}
+.addnew {
+    display: grid;
+
+}
+.line-label {
+    display: block;
+    font: bold 0.8em helvetica;
+}
+.form-component {
+    font: 1.2em georgia;
+    border: none;
+    border-bottom:3px solid #eee;
+    line-height: 1;
+    padding: 0.5em;
+    vertical-align: middle;
+    height: 2.5em;
+    margin: 0.25em 0;
+}
+.form-component:focus {
+    outline: none;
+    border-bottom:3px solid black;
+}
+.form-component.inpt {
+    padding: 0.5em 0em;
+}
+.form-component.btn {
+    background-color: #eee;
+}
+
+.filters {
+    margin: 1em 0;
+    padding: 0 1.5em;
+    font: bold 0.8em helvetica;
+}
+.filters li { 
+    display:inline-block;
+    margin-right: 1em;
+    line-height: 1.5;
+}
+.filters input {
+    display: none;
+}
+.filters input:checked + label {
+    border-bottom: 3px solid black;
+}
+.shoppinglist {
+    /* border-bottom: 1px solid #eee; */
+}
+.shoppinglist li {
+    padding: 0.5em 1.5em;
+    position: relative;
+    /* border-top: 1px solid #eee; */
+}
+.shoppinglist li:before {
+    content: "";
+    display: block;
+    width: 0.5em;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #eee;
+}
+.shoppinglist li.fruit:before { background-color: tomato; }
+.shoppinglist li.veg:before { background-color: dodgerblue; }
+.shoppinglist li.dry:before { background-color: gold; }
+
+
+input[value="Add"] {
+    background-color: red;
+}
+
+
+
+
+
+@media screen and (min-width: 40em) {
+    body {
+        font: 1.5em georgia;
+    }
+    .addnew {
+        grid-template-columns: 1fr auto;
+    }
+}

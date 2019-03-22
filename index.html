@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+
+    <main class="layout">
+      <header class="header">
+        <h1>Shopping List</h1>
+      </header>
+
+      <form id="newItem" class="newitem" autocomplete="off">
+        <label for="item" class="line-label">New Item</label>
+        <div class="addnew">
+          <input type="text" name="item" id="item" class="form-component inpt" placeholder="What do you need?">
+          <input type="submit" value="Add" class="form-component btn">
+        </div>
+      </form>
+
+      <form id="filterCategories">
+        <ul class="filters">
+          <li><input type="radio" name="category" value="all" id="filterAll"><label for="filterAll">All</label></li>
+          <li><input type="radio" name="category" value="fruit" id="filterFruit"><label for="filterFruit">Fruits</label></li>
+          <li><input type="radio" name="category" value="veg" id="filterVeg"><label for="filterVeg">Vegetables</label></li>
+          <li><input type="radio" name="category" value="dry" id="filterDry"><label for="filterDry">Dry Goods</label></li>
+        </ul>
+      </form>
+
+      <ul id="shoppinglist" class="shoppinglist"></ul>
+    </main>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+    <script src="js/main.js"></script>
+  </body>
+</html>
