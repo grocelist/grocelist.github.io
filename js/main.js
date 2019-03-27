@@ -1,15 +1,22 @@
+// Select all of the necessary dom elements
 const shopping = document.getElementById(`shoppinglist`);
 const vegetables = document.getElementById(`vegetables`);
 const drygoods = document.getElementById(`drygoods`);
 const newitemform = document.getElementById(`newItem`);
 const filterForm = document.getElementById(`filterCategories`)
 
-const FRUIT = `fruit`;
-const VEG = `veg`;
-const DRY = `dry`;
-
-
+// Array will hold all off the shopping list items
 let shoppingList;
+
+// Store all the valid categories
+// true categories are actual valid categories, `all` is false because it's just a filter
+// This isn't implemented, but could be handy down the road.
+const categories = {
+    all: false,
+    fruit: true,
+    veg: true,
+    dry: true,
+}
 
 
 // GENERIC PRINTER //////////////////////////////////////////////
@@ -26,8 +33,48 @@ function printList(theArrayToPrint = shoppingList) {
         theArrayToPrint = theArrayToPrint.filter(item => item.cat == catToShow)
 
     // Add the entire list of <li> items to the document
-    shopping.innerHTML = theArrayToPrint.map(item => `<li class="${item.cat}">${item.qty} ${item.name}</li>`).join('');
+    shopping.innerHTML = theArrayToPrint.map(item => `
+        <li class="${item.cat}">
+            <button data-id="${item.id}" data-step="-1">-</button>
+            <span>${item.qty} ${item.name}</span>
+            <button data-id="${item.id}" data-step="1">+</button>
+        </li>
+    `).join('');
 }
+
+
+
+// CATEGORY FILTER PRINTER ////////////////////////////////////////
+//Print filters from an object
+function printFilters(allcats = categories) {
+    document.querySelector('.filters').innerHTML = Object.keys(allcats).map((cat, i) => `<li><input type="radio" name="category" value="${cat}" id="filter${i}"><label for="filter${i}">${cat}</label></li>`).join('');
+}
+
+
+
+// +/- QUANTITY NEEDED ///////////////////////////////////////////
+// When the shopping list is clicked, check if it was an +/- button
+shopping.addEventListener('click', event => {
+    // If not a button, leave the function immediately (return)
+    if (!event.target.matches('button') || !event.target.dataset.id) return;
+
+    // Which item are we updating?
+    const updateId = parseInt(event.target.dataset.id);
+
+    // Add 1 or subtract 1?
+    const step = parseInt(event.target.dataset.step);
+
+    // Update the quantity based on the step value
+    // If the quantity will end up less than 0, fail the block (won't reach the second step: the update)
+    { (shoppingList[shoppingList.findIndex(item => item.id === updateId)].qty + step >= 0) && 
+        (shoppingList[shoppingList.findIndex(item => item.id === updateId)].qty += step) }
+
+    // Save our shoppingList to the browser
+    window.localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+
+    // Print the list
+    printList();
+});
 
 
 
@@ -57,7 +104,7 @@ newitemform.addEventListener('submit', event => {
     // Use the current filter category as the default for any new items added
     // Push it into our dataset (Array: shoppingList)
     // Default to 0 quantity, and no category
-    shoppingList.push( { name: groceryItem, qty: 0, cat: defaultCategory } );
+    shoppingList.push( { id: shoppingList.length, name: groceryItem, qty: 1, cat: defaultCategory } );
 
     // Save our shoppingList to the browser
     window.localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
@@ -80,24 +127,19 @@ filterForm.addEventListener('click', event => {
 
     // Must be a radio button if we got this far. Go ahead and print
     printList();
-})
+});
 
 
 
-// WHEN THE WINDOW HAS LOADED ALL OF ITS VARIABLES, ETC... ////////////
+// STARTUP THE APPLICATION ///////////////////////////////////////////
+// When the window is loaded, start the application!
 window.addEventListener('load', event => {
-
-    // const shoppingList = [
-    //     { name: `apples`, qty: 3, cat: FRUIT },
-    //     { name: `bananas`, qty: 0, cat: FRUIT },
-    //     { name: `cucumbers`, qty: 3, cat: VEG },
-    //     { name: `strawberries`, qty: 10, cat: FRUIT },
-    //     { name: `kraft dinner`, qty: 0, cat: DRY },
-    //     { name: `eggplant`, qty: 2, cat: VEG },
-    // ];
 
     // Load up date from localStorage. If no data was 
     shoppingList = JSON.parse(window.localStorage.getItem('shoppingList')) || [];
+
+    // Add all the filters
+    printFilters();
 
     // Before we print the list for the first time, check if there was a category that we left off with
     // If no category was set, default to "all"
@@ -111,4 +153,3 @@ window.addEventListener('load', event => {
     printList();
 
 });
-
